@@ -70,3 +70,8 @@ urllib3
 waitress
 websocket-client
 Werkzeug
+imageios
+ipywidgets
+jupyter
+widgetsnbextension
+pandas-profiling

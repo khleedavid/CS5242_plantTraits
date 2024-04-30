@@ -3,6 +3,8 @@ import torch.nn as nn
 import torch
 import warnings
 import pandas as pd
+from torchmetrics.regression import R2Score
+
 
 warnings.simplefilter(action="ignore", category=UserWarning)
 
@@ -73,7 +75,7 @@ class MultipleInputRegressions(L.LightningModule):
     
     def training_step(self, batch, batch_idx):
         image, tabular, y = batch
-        criterion = torch.nn.L1Loss()
+        criterion = torch.nn.SmoothL1Loss()
         y_pred = self(image, tabular)
         
         y_pred = y_pred.float()
@@ -86,7 +88,7 @@ class MultipleInputRegressions(L.LightningModule):
     
     def test_step(self, batch, batch_idx):
         image, tabular, y = batch
-        criterion = torch.nn.L1Loss()
+        criterion = torch.nn.SmoothL1Loss()
         y_pred = self(image, tabular)
         # y_pred = torch.flatten(self(image, tabular))
         y_pred = y_pred.float()
@@ -97,12 +99,15 @@ class MultipleInputRegressions(L.LightningModule):
     def validation_step(self, batch, batch_idx):
         image, tabular, y = batch
         
-        criterion = torch.nn.L1Loss()
+        criterion = torch.nn.SmoothL1Loss()
+        r2 = R2Score()
         y_pred = self(image, tabular)
         
         y_pred = y_pred.float()
         val_loss = criterion(y_pred, y)
+        # r2_score = r2(y_pred, y)
         self.log("val_loss", val_loss)
+        # self.log("r2", r2_score)
 
     def predict_step(self, batch, batch_idx):
         image_id, image, tabular = batch

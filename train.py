@@ -26,7 +26,7 @@ if __name__ == "__main__":
     train_loader = DataLoader(train_set, 32)
     val_loader = DataLoader(val_set, 32)
     test_loader = DataLoader(test_set, 32)
-    trainer = L.Trainer(max_epochs=10)
+    trainer = L.Trainer(max_epochs=5)
 
     trainer.fit(model, train_loader, val_loader)
     trainer.test(model, dataloaders=test_loader)
