@@ -69,3 +69,32 @@ class TestImageDataset(Dataset):
         plant_traits = plant_traits.tolist()
         plant_traits = torch.FloatTensor(plant_traits[1:])
         return image_id, image, plant_traits
+    
+
+class ValImageDataset(Dataset):
+    """Combining tabular data and image data into a single dateset."""
+
+    def __init__(self, csv_file_path, image_dir):
+        self.image_dir = image_dir
+        plant_df = pd.read_csv(csv_file_path)
+        ## should remove the na data first
+        self.plant_df = clean_up_na_data(plant_df)
+
+    def __len__(self):
+        return len(self.plant_df)
+    
+    def __getitem__(self, idx):
+        if torch.is_tensor(idx):
+            idx = idx.tolist()
+        
+        plant_traits = self.plant_df.iloc[idx]
+        image_id = int(plant_traits['id'])
+        image = Image.open(f"{self.image_dir}/{image_id}.jpeg")
+        image = np.array(image)
+
+        image = transforms.functional.to_tensor(image)
+
+        plant_traits = plant_traits.drop(target_columns)
+        plant_traits = plant_traits.tolist()[1:]
+        plant_traits = torch.FloatTensor(plant_traits)
+        return image_id, image, plant_traits
