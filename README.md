@@ -11,6 +11,5 @@
  * - Model prediction can be done by running the `predict.py` script.
  * - The presentation slides for this project can be found in the `CS5242 presentation.pptx` file.
  * - The poster for this project can be found in the `CS5242 poster Group 46.pdf` file.
- 
- For more details, please refer to the README.md file located at /Users/dlkh/Documents/GitHub/CS5242 Neural Networks/CS5242_plantTraits/README.md
+
  
